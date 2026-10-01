@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConcorrentesIndexRouteImport } from './routes/concorrentes.index'
+import { Route as ConcorrentesIdRouteImport } from './routes/concorrentes.$id'
+import { Route as LicitacoesIndexRouteImport } from './routes/licitacoes.index'
+import { Route as LicitacoesNovaRouteImport } from './routes/licitacoes.nova'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConcorrentesIndexRoute = ConcorrentesIndexRouteImport.update({
+  id: '/concorrentes/',
+  path: '/concorrentes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConcorrentesIdRoute = ConcorrentesIdRouteImport.update({
+  id: '/concorrentes/$id',
+  path: '/concorrentes/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LicitacoesIndexRoute = LicitacoesIndexRouteImport.update({
+  id: '/licitacoes/',
+  path: '/licitacoes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LicitacoesNovaRoute = LicitacoesNovaRouteImport.update({
+  id: '/licitacoes/nova',
+  path: '/licitacoes/nova',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/concorrentes/$id': typeof ConcorrentesIdRoute
+  '/licitacoes/nova': typeof LicitacoesNovaRoute
+  '/concorrentes/': typeof ConcorrentesIndexRoute
+  '/licitacoes/': typeof LicitacoesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/concorrentes/$id': typeof ConcorrentesIdRoute
+  '/licitacoes/nova': typeof LicitacoesNovaRoute
+  '/concorrentes': typeof ConcorrentesIndexRoute
+  '/licitacoes': typeof LicitacoesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/concorrentes/$id': typeof ConcorrentesIdRoute
+  '/licitacoes/nova': typeof LicitacoesNovaRoute
+  '/concorrentes/': typeof ConcorrentesIndexRoute
+  '/licitacoes/': typeof LicitacoesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/concorrentes/$id'
+    | '/licitacoes/nova'
+    | '/concorrentes/'
+    | '/licitacoes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/concorrentes/$id'
+    | '/licitacoes/nova'
+    | '/concorrentes'
+    | '/licitacoes'
+  id:
+    | '__root__'
+    | '/'
+    | '/concorrentes/$id'
+    | '/licitacoes/nova'
+    | '/concorrentes/'
+    | '/licitacoes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConcorrentesIdRoute: typeof ConcorrentesIdRoute
+  LicitacoesNovaRoute: typeof LicitacoesNovaRoute
+  ConcorrentesIndexRoute: typeof ConcorrentesIndexRoute
+  LicitacoesIndexRoute: typeof LicitacoesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/concorrentes/': {
+      id: '/concorrentes/'
+      path: '/concorrentes'
+      fullPath: '/concorrentes/'
+      preLoaderRoute: typeof ConcorrentesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concorrentes/$id': {
+      id: '/concorrentes/$id'
+      path: '/concorrentes/$id'
+      fullPath: '/concorrentes/$id'
+      preLoaderRoute: typeof ConcorrentesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/licitacoes/': {
+      id: '/licitacoes/'
+      path: '/licitacoes'
+      fullPath: '/licitacoes/'
+      preLoaderRoute: typeof LicitacoesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/licitacoes/nova': {
+      id: '/licitacoes/nova'
+      path: '/licitacoes/nova'
+      fullPath: '/licitacoes/nova'
+      preLoaderRoute: typeof LicitacoesNovaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConcorrentesIdRoute: ConcorrentesIdRoute,
+  LicitacoesNovaRoute: LicitacoesNovaRoute,
+  ConcorrentesIndexRoute: ConcorrentesIndexRoute,
+  LicitacoesIndexRoute: LicitacoesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
