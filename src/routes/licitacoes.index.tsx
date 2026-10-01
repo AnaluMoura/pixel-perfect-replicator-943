@@ -39,14 +39,14 @@ function Licitacoes() {
   async function excluir(id: string) {
     if (!confirm("Excluir este resultado?")) return;
     const { error } = await supabase.from("licitacoes").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Resultado excluído.");
     invalidate();
   }
 
   return (
     <>
-      <PageHeader title="Licitações" subtitle={`${rows.length} resultados`} actions={<Button asChild><Link to="/licitacoes/nova"><Plus className="h-4 w-4" /> Cadastrar resultado</Link></Button>} />
+      <PageHeader title="Licitações" subtitle={`${rows.length} resultados`} actions={<Button asChild><Link to="/licitacoes/nova" search={{ id: undefined }}><Plus className="h-4 w-4" /> Cadastrar resultado</Link></Button>} />
       <div className="panel mb-6 flex flex-wrap gap-4 p-4">
         <label className="flex min-w-[200px] flex-1 flex-col gap-1.5">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Buscar</span>

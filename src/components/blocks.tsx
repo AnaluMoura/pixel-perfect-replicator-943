@@ -4,7 +4,7 @@ import { Bar, BarChart, CartesianGrid, Cell, LabelList, ResponsiveContainer, Too
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TODOS, fmtPct } from "@/lib/data";
 
-export function Kpi({ label, value, hint, icon }: { label: string; value: ReactNode; hint?: string; icon?: ReactNode }) {
+export function Kpi({ label, value, hint, icon }: { label: string; value: ReactNode; hint?: string | undefined; icon?: ReactNode }) {
   return (
     <div className="panel kpi-accent p-5">
       <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -86,7 +86,7 @@ export function BarrasHorizontais({
         <XAxis type="number" hide />
         <YAxis type="category" dataKey="nome" width={190} tick={{ fontSize: 12, fill: "var(--foreground)" }} tickLine={false} axisLine={false} />
         <Tooltip cursor={{ fill: "var(--muted)" }} formatter={(v: number) => format(v)} contentStyle={{ borderRadius: 8, border: "1px solid var(--border)" }} />
-        <Bar dataKey={valueKey} radius={[0, 4, 4, 0]} barSize={22} onClick={onClick ? (d) => onClick(d as never) : undefined} className={onClick ? "cursor-pointer" : ""}>
+        <Bar dataKey={valueKey} radius={[0, 4, 4, 0]} barSize={22} onClick={(d: unknown) => onClick?.(d as never)} className={onClick ? "cursor-pointer" : ""}>
           {data.map((_, i) => <Cell key={i} fill={highlightFirst || i === 0 ? "var(--chart-1)" : "var(--chart-2)"} />)}
           <LabelList dataKey={valueKey} position="right" formatter={(v: number) => format(v)} style={{ fontSize: 12, fontWeight: 600, fill: "var(--graphite)" }} />
         </Bar>

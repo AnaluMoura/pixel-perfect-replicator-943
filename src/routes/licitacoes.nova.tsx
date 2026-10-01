@@ -15,7 +15,7 @@ import { calcDesagio, fmtPct, parseMoeda, useConcorrentes, useInvalidateAll, use
 
 export const Route = createFileRoute("/licitacoes/nova")({
   ssr: false,
-  validateSearch: (s: Record<string, unknown>) => ({ id: typeof s.id === "string" ? s.id : undefined }),
+  validateSearch: (s: Record<string, unknown>) => ({ id: typeof s["id"] === "string" ? (s["id"] as string) : undefined }),
   head: () => ({
     meta: [
       { title: "Cadastrar resultado · Radar Conarte" },
@@ -44,7 +44,7 @@ function NovaOpcao({ tabela, onCreated }: { tabela: "tipos_obra" | "orgaos_publi
     const nome = v.trim();
     if (!nome || nome.length > 120) return;
     const { error } = await supabase.from(tabela).insert({ nome });
-    if (error && error.code !== "23505") return toast.error(error.message);
+    if (error && error.code !== "23505") { toast.error(error.message); return; }
     await invalidate();
     onCreated(nome);
     setV("");
@@ -89,9 +89,9 @@ function Form() {
   async function salvar(e: React.FormEvent) {
     e.preventDefault();
     const p = schema.safeParse(f);
-    if (!p.success) return toast.error(p.error.issues[0].message);
-    if (!(est > 0)) return toast.error("Valor estimado deve ser maior que zero.");
-    if (!(ven > 0)) return toast.error("Valor vencedor deve ser maior que zero.");
+    if (!p.success) { toast.error(p.error.issues[0]?.message ?? "Dados inválidos"); return; }
+    if (!(est > 0)) { toast.error("Valor estimado deve ser maior que zero."); return; }
+    if (!(ven > 0)) { toast.error("Valor vencedor deve ser maior que zero."); return; }
     setSaving(true);
     const payload = {
       edital: f.edital.trim(), orgao_publico: f.orgao, tipo_obra: f.tipo, objeto: f.objeto.trim() || null,
@@ -99,7 +99,7 @@ function Form() {
     };
     const { error } = id ? await supabase.from("licitacoes").update(payload).eq("id", id) : await supabase.from("licitacoes").insert(payload);
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(id ? "Resultado atualizado." : "Resultado salvo.");
     await invalidate();
     nav({ to: "/licitacoes" });

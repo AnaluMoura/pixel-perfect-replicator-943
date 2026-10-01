@@ -5,17 +5,18 @@ import { useState, type ReactNode } from "react";
 const items = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/licitacoes", label: "Licitações", icon: ListChecks },
-  { to: "/licitacoes/nova", label: "Cadastrar resultado", icon: FilePlus2 },
+  { to: "/licitacoes/nova", search: { id: undefined }, label: "Cadastrar resultado", icon: FilePlus2 },
   { to: "/concorrentes", label: "Concorrentes", icon: Building2 },
 ] as const;
 
 function Nav({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav className="flex flex-col gap-1 px-3">
-      {items.map(({ to, label, icon: Icon }) => (
+      {items.map(({ to, label, icon: Icon, ...rest }) => (
         <Link
           key={to}
           to={to}
+          {...("search" in rest ? { search: rest.search } : {})}
           onClick={onNavigate}
           activeOptions={{ exact: true }}
           className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"

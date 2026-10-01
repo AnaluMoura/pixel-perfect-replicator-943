@@ -23,16 +23,16 @@ export function ConcorrenteDialog({ open, onOpenChange, editing, onSaved }: { op
   async function salvar() {
     const n = nome.trim().toUpperCase();
     const c = soDigitos(cnpj);
-    if (!n || n.length > 200) return toast.error("Informe o nome da empresa.");
-    if (!c) return toast.error("Informe o CNPJ.");
-    if (!cnpjValido(c)) return toast.error("CNPJ inválido.");
+    if (!n || n.length > 200) { toast.error("Informe o nome da empresa."); return; }
+    if (!c) { toast.error("Informe o CNPJ."); return; }
+    if (!cnpjValido(c)) { toast.error("CNPJ inválido."); return; }
     setSaving(true);
     const q = editing
       ? supabase.from("concorrentes").update({ nome_empresa: n, cnpj: c }).eq("id", editing.id).select().single()
       : supabase.from("concorrentes").insert({ nome_empresa: n, cnpj: c }).select().single();
     const { data, error } = await q;
     setSaving(false);
-    if (error) return toast.error(error.code === "23505" ? "Já existe empresa com esse nome ou CNPJ." : error.message);
+    if (error) { toast.error(error.code === "23505" ? "Já existe empresa com esse nome ou CNPJ." : error.message); return; }
     toast.success("Concorrente salvo.");
     await invalidate();
     onSaved?.(data as Concorrente);

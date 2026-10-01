@@ -43,10 +43,10 @@ function Concorrentes() {
   }, [conc.data, lic.data, busca]);
 
   async function excluir(c: (typeof lista)[number]) {
-    if (c.vitorias > 0) return toast.error(`Não é possível excluir: ${c.vitorias} licitação(ões) vinculada(s). Reatribua ou exclua os resultados antes.`);
+    if (c.vitorias > 0) { toast.error(`Não é possível excluir: ${c.vitorias} licitação(ões) vinculada(s). Reatribua ou exclua os resultados antes.`); return; }
     if (!confirm(`Excluir ${c.nome_empresa}?`)) return;
     const { error } = await supabase.from("concorrentes").delete().eq("id", c.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Concorrente excluído.");
     invalidate();
   }

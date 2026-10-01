@@ -57,7 +57,7 @@ function Dashboard() {
                 valueKey="vitorias"
                 format={(v) => `${v} ${v === 1 ? "vitória" : "vitórias"}`}
                 highlightFirst={false}
-                onClick={(d) => nav({ to: "/concorrentes/$id", params: { id: String(d.id) } })}
+                onClick={(d) => nav({ to: "/concorrentes/$id", params: { id: String(d["id"]) } })}
               />
             </Panel>
             <Panel title="Deságio médio por tipo de obra">
