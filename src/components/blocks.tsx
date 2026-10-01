@@ -81,7 +81,7 @@ export function BarrasHorizontais({
   if (!data.length) return <Vazio />;
   return (
     <ResponsiveContainer width="100%" height={Math.max(160, data.length * 44)}>
-      <BarChart data={data} layout="vertical" margin={{ left: 8, right: 60, top: 4, bottom: 4 }}>
+      <BarChart data={data} layout="vertical" margin={{ left: 8, right: 90, top: 4, bottom: 4 }}>
         <CartesianGrid horizontal={false} stroke="var(--border)" />
         <XAxis type="number" hide />
         <YAxis type="category" dataKey="nome" width={190} tick={{ fontSize: 12, fill: "var(--foreground)" }} tickLine={false} axisLine={false} />
