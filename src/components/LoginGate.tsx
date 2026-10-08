@@ -25,7 +25,6 @@ export function LoginGate({ children }: { children: ReactNode }) {
 }
 
 function LoginForm() {
-  const [modo, setModo] = useState<"entrar" | "criar">("entrar");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [busy, setBusy] = useState(false);
@@ -33,14 +32,8 @@ function LoginForm() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
-    if (modo === "entrar") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
-      if (error) toast.error("E-mail ou senha incorretos.");
-    } else {
-      const { error } = await supabase.auth.signUp({ email, password: senha, options: { emailRedirectTo: window.location.origin } });
-      if (error) toast.error(error.message);
-      else { toast.success("Conta criada! Confirme pelo link enviado ao seu e-mail."); setModo("entrar"); }
-    }
+    const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
+    if (error) toast.error("E-mail ou senha incorretos.");
     setBusy(false);
   }
 
@@ -52,21 +45,19 @@ function LoginForm() {
           <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground"><Radar className="h-5 w-5" /></div>
           <div>
             <div className="font-display text-xl font-bold">RADAR · Conarte</div>
-            <div className="text-xs text-muted-foreground">{modo === "entrar" ? "Entre com seu login e senha" : "Criar nova conta"}</div>
+            <div className="text-xs text-muted-foreground">Entre com seu login e senha</div>
           </div>
         </div>
         <label className="block space-y-1 text-sm font-medium">E-mail
           <input type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className={input} />
         </label>
         <label className="block space-y-1 text-sm font-medium">Senha
-          <input type="password" required minLength={6} autoComplete={modo === "entrar" ? "current-password" : "new-password"} value={senha} onChange={(e) => setSenha(e.target.value)} className={input} />
+          <input type="password" required minLength={6} autoComplete="current-password" value={senha} onChange={(e) => setSenha(e.target.value)} className={input} />
         </label>
         <button disabled={busy} className="w-full rounded-md bg-primary py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
-          {busy ? "Aguarde…" : modo === "entrar" ? "Entrar" : "Criar conta"}
+          {busy ? "Aguarde…" : "Entrar"}
         </button>
-        <button type="button" onClick={() => setModo(modo === "entrar" ? "criar" : "entrar")} className="w-full text-center text-sm text-muted-foreground hover:text-foreground">
-          {modo === "entrar" ? "Não tem conta? Criar conta" : "Já tenho conta · Entrar"}
-        </button>
+        <p className="text-center text-xs text-muted-foreground">Acesso restrito. Contas são criadas pelo administrador.</p>
       </form>
     </div>
   );
