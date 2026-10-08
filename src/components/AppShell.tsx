@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, FilePlus2, Building2, ListChecks, Radar, Menu, X } from "lucide-react";
+import { LayoutDashboard, FilePlus2, Building2, ListChecks, Radar, Menu, X, LogOut } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { sair } from "@/components/LoginGate";
 
 const items = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -52,6 +53,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Brand />
         <Nav />
         <div className="mt-auto border-t border-sidebar-border px-6 py-4 text-xs text-sidebar-foreground">
+          <button onClick={() => sair()} className="mb-2 flex items-center gap-2 text-sm font-medium text-sidebar-accent-foreground hover:text-primary">
+            <LogOut className="h-4 w-4" /> Sair
+          </button>
           Inteligência competitiva de preços
         </div>
       </aside>
