@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "@/components/AppShell";
 import { Toaster } from "@/components/ui/sonner";
+import { LoginGate } from "@/components/LoginGate";
 
 function NotFoundComponent() {
   return (
@@ -95,9 +96,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <AppShell>
-        <Outlet />
-      </AppShell>
+      <LoginGate>
+        <AppShell>
+          <Outlet />
+        </AppShell>
+      </LoginGate>
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
